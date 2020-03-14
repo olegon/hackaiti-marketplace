@@ -10,8 +10,8 @@ namespace Product.Service.API.Infrastrcture.AutoMapper
             CreateMap<CreateProductRequest, Entities.Product>();
             CreateMap<CreateProductRequest.ProductPrice, Entities.ProductPrice>();
             
-            CreateMap<Entities.Product, CreateProductResponse>();
-            CreateMap<Entities.ProductPrice, CreateProductResponse.ProductPrice>();
+            CreateMap<Entities.Product, ProductResponse>();
+            CreateMap<Entities.ProductPrice, ProductResponse.ProductPrice>();
         }
     }
 }

@@ -35,8 +35,10 @@ namespace product.service.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(string id)
+        public async Task<IActionResult> GetProductById([FromRoute]string id)
         {
+             _logger.LogInformation("GetProductById: {id}", id);
+
             var product = await _productRepository.GetProductById(id);
 
             if (product == null)
@@ -44,13 +46,36 @@ namespace product.service.API.Controllers
                 return NotFound();
             }
 
-            return Ok(product);
+            var response = _mapper.Map<ProductResponse>(product);
+
+            _logger.LogInformation("GetProductById - ProductResponse: {@response}", response);
+
+            return Ok(response);
+        }
+
+        [HttpGet("sku/{sku}")]
+        public async Task<IActionResult> GetProductBySKU([FromRoute]string sku)
+        {
+            _logger.LogInformation("GetProductBySKU: {sku}", sku);
+
+            var product = await _productRepository.GetProductBySku(sku);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            var response = _mapper.Map<ProductResponse>(product);
+
+            _logger.LogInformation("GetProductBySKU - ProductResponse: {@response}", response);
+
+            return Ok(response);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]CreateProductRequest payload)
+        public async Task<IActionResult> AddProduct([FromBody]CreateProductRequest payload)
         {
-            _logger.LogInformation("CreateProductRequest: {@payload}", payload);
+            _logger.LogInformation("AddProduct: {@payload}", payload);
 
             var product = _mapper.Map<Product.Service.API.Entities.Product>(payload);
 
@@ -63,9 +88,9 @@ namespace product.service.API.Controllers
                 return UnprocessableEntity(ex.Message);
             }
 
-            var productResponse = _mapper.Map<CreateProductResponse>(product);
+            var response = _mapper.Map<ProductResponse>(product);
 
-            _logger.LogInformation("CreateProductResponse: {@response}", productResponse);
+            _logger.LogInformation("AddProduct - ProductResponse: {@response}", response);
 
             return Created($"/products/{product.Id}", product);
         }
