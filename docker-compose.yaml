@@ -2,6 +2,7 @@ version: '3'
 services:
   product-service:
     build: ./Product.Service
+    container_name: product-service
     ports:
     - "5000:80"
     environment: 
@@ -10,6 +11,26 @@ services:
     - AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
     depends_on: 
     - mongo-product-service
+
+  cart-service:
+    build: ./Cart.Service
+    container_name: cart-service
+    ports:
+    - "5050:80"
+    environment: 
+    - MongoDbConnectionString=mongodb://mongo-cart-service:27017
+    - ProductServiceURI=http://product-service
+    - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+    - AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+    depends_on: 
+    - mongo-cart-service
+    - product-service
+
   mongo-product-service:
     image: mongo
-    container_name: "mongo-product-service"
+    container_name: mongo-product-service
+
+  mongo-cart-service:
+    image: mongo
+    container_name: mongo-cart-service
+
