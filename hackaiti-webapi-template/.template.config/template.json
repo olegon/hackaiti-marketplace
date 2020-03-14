@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "olegon",
+  "classifications": [
+    "Web",
+    "WebAPI",
+    "Test",
+    "NUnit"
+  ],
+  "name": "HackaIti WebAPI template",
+  "identity": "hackati.templates.webapi",
+  "groupIdentity": "hackati.templates",
+  "shortName": "hackati-webapi",
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  },
+  "sourceName": "hackaiti-webapi-template",
+  "preferNameDirectory": true
+}
