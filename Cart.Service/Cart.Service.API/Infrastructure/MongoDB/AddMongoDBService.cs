@@ -20,12 +20,12 @@ namespace Cart.Service.API.Infrastructure.MongoDB
                 return client.GetDatabase("hackati_carts");
             });
 
-            // services.AddTransient<IMongoCollection<Entities.Product>>(serviceProvider =>
-            // {
-            //     var database = serviceProvider.GetService<IMongoDatabase>();
+            services.AddTransient<IMongoCollection<Entities.Cart>>(serviceProvider =>
+            {
+                var database = serviceProvider.GetService<IMongoDatabase>();
 
-            //     return database.GetCollection<Entities.Product>("products");
-            // });
+                return database.GetCollection<Entities.Cart>("carts");
+            });
 
             return services;
         }

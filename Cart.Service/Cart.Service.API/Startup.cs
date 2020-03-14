@@ -16,6 +16,9 @@ using System.Diagnostics.CodeAnalysis;
 using Cart.Service.API.Infrastrcture.AutoMapper;
 using Cart.Service.API.Infrastructure.MongoDB;
 using AutoMapper;
+using Cart.Service.API.Repositories;
+using Cart.Service.API.Services;
+using Refit;
 
 namespace cart.service.API
 {
@@ -37,6 +40,14 @@ namespace cart.service.API
             services.AddAutoMapper(typeof(CartProfile).Assembly);
 
             services.AddMongoDB(Configuration);
+
+            services.AddScoped<ICartRepository, CartRepository>();
+
+            services.AddScoped<IProductService>(serviceProvider =>
+            {
+                var productServiceURI = Configuration["ProductServiceURI"];
+                return RestService.For<IProductService>(productServiceURI);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
