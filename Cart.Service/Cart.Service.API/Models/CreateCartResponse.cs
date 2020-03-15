@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Cart.Service.API.Models
 {
-    public class CreateCartResponse
+    public class CartResponse
     {
         [JsonProperty("id")]
         public string Id { get; set; }

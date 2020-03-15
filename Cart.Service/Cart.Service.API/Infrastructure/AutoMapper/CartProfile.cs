@@ -7,9 +7,10 @@ namespace Cart.Service.API.Infrastrcture.AutoMapper
     {
         public CartProfile()
         {
-            this.CreateMap<Entities.Cart, CreateCartResponse>();
-            this.CreateMap<Entities.CartItem, CreateCartResponse.CartItem>()
-                .ForMember(dest => dest.CurrencyCode, opts => opts.MapFrom(src => src.Product.Price.CurrencyCode));
+            this.CreateMap<Entities.Cart, CartResponse>();
+            this.CreateMap<Entities.CartItem, CartResponse.CartItem>()
+                .ForMember(dest => dest.CurrencyCode, opts => opts.MapFrom(src => src.Product.Price.CurrencyCode))
+                .ForMember(dest => dest.Id, opts => opts.MapFrom(src => src.Product.Id));
         }
     }
 }

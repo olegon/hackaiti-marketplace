@@ -32,11 +32,54 @@ namespace cart.service.API.Controllers
 
             var cart = await _cartRepository.CreateCart(payload);      
 
-            var response = _mapper.Map<CreateCartResponse>(cart);      
+            var response = _mapper.Map<CartResponse>(cart);      
 
             _logger.LogInformation("CreateCartRequest: {@response}", response);
 
             return Ok(response);
         }
+
+        [HttpDelete("{cartId}")]
+        public async Task<IActionResult> CancelCart([FromRoute]string cartId)
+        {
+            _logger.LogInformation("CancelCart: {cartId}", cartId);
+
+            var cart = await _cartRepository.CancelCart(cartId);      
+
+            var response = _mapper.Map<CartResponse>(cart);      
+
+            _logger.LogInformation("CancelCart: {@response}", response);
+
+            return Ok(response);
+        }
+
+        [HttpPatch("{cartId}/items")]
+        public async Task<IActionResult> UpdateCartItem([FromRoute]string cartId, [FromBody]UpdateCartItemRequest payload)
+        {
+            _logger.LogInformation("UpdateCartItem: {cartId} {@payload}", cartId, payload);
+
+            var cart = await _cartRepository.UpdateCartItem(cartId, payload);      
+
+            var response = _mapper.Map<CartResponse>(cart);      
+
+            _logger.LogInformation("UpdateCartItem: {@response}", response);
+
+            return Ok(response);
+        }
+
+        [HttpPost("{cartId}/checkout")]
+        public async Task<IActionResult> CartCheckout([FromRoute]string cartId, [FromBody]CartCheckoutRequest payload)
+        {
+            _logger.LogInformation("CartCheckout: {cartId} {@payload}", cartId, payload);
+
+            var cart = await _cartRepository.CartCheckout(cartId, payload);      
+
+            var response = _mapper.Map<CartResponse>(cart);      
+
+            _logger.LogInformation("CartCheckout: {@response}", response);
+
+            return Ok(response);
+        }
+        
     }
 }
