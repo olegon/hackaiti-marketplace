@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Amazon.SQS;
+using Amazon.SQS.Model;
 using Cart.Service.API.Entities;
 using Cart.Service.API.Exceptions;
 using Cart.Service.API.Models;
 using Cart.Service.API.Services;
+using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
+using Newtonsoft.Json;
 using Refit;
 
 namespace Cart.Service.API.Repositories
@@ -20,11 +24,15 @@ namespace Cart.Service.API.Repositories
 
         private readonly IMongoCollection<Entities.Cart> _cartsCollection;
         private readonly IProductService _productService;
-        
-        public CartRepository(IMongoCollection<Entities.Cart> cartsCollection, IProductService productService)
+        private readonly AmazonSQSClient _amazonSQSClient;
+        private readonly IConfiguration _configuration;
+
+        public CartRepository(IMongoCollection<Entities.Cart> cartsCollection, IProductService productService, AmazonSQSClient amazonSQSClient, IConfiguration configuration)
         {
             _cartsCollection = cartsCollection;
             _productService = productService;
+            _amazonSQSClient = amazonSQSClient;
+            _configuration = configuration;
         }
 
         public async Task<Entities.Cart> GetCartById(string cartId)
@@ -145,6 +153,12 @@ namespace Cart.Service.API.Repositories
             }
 
             databaseCart.Status = STATUS_DONE;
+
+            await _amazonSQSClient.SendMessageAsync(new SendMessageRequest()
+            {
+                QueueUrl = _configuration["AmazonSQSCheckoutQueueURL"],
+                MessageBody = JsonConvert.SerializeObject(databaseCart)
+            });
 
             await _cartsCollection.ReplaceOneAsync(cart => cart.Id == cartId, databaseCart);
 

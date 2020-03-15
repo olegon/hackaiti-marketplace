@@ -19,6 +19,7 @@ using AutoMapper;
 using Cart.Service.API.Repositories;
 using Cart.Service.API.Services;
 using Refit;
+using Cart.Service.API.Infrastructure.AmazonSQS;
 
 namespace cart.service.API
 {
@@ -40,6 +41,8 @@ namespace cart.service.API
             services.AddAutoMapper(typeof(CartProfile).Assembly);
 
             services.AddMongoDB(Configuration);
+
+            services.AddAmazonSQS(Configuration);
 
             services.AddScoped<ICartRepository, CartRepository>();
 

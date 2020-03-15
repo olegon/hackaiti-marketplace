@@ -20,6 +20,7 @@ services:
     environment: 
     - MongoDbConnectionString=mongodb://mongo-cart-service:27017
     - ProductServiceURI=http://product-service
+    - AmazonSQSCheckoutQueueURL=https://sqs.us-east-1.amazonaws.com/105029661252/hackati-marketplace-start-checkout
     - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
     - AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
     depends_on: 
