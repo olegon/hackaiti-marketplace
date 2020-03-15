@@ -5,11 +5,13 @@ using System.Net;
 using System.Threading.Tasks;
 using Amazon.SQS;
 using Amazon.SQS.Model;
+using AutoMapper;
 using Cart.Service.API.Entities;
 using Cart.Service.API.Exceptions;
 using Cart.Service.API.Models;
 using Cart.Service.API.Services;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using Newtonsoft.Json;
 using Refit;
@@ -21,14 +23,23 @@ namespace Cart.Service.API.Repositories
         public const string STATUS_DONE = "DONE";
         public const string STATUS_CANCELED = "CANCEL";
         public const string STATUS_PENDING = "PENDING";
-
+        private readonly ILogger<CartRepository> _logger;
+        private readonly IMapper _mapper;
         private readonly IMongoCollection<Entities.Cart> _cartsCollection;
         private readonly IProductService _productService;
         private readonly AmazonSQSClient _amazonSQSClient;
         private readonly IConfiguration _configuration;
 
-        public CartRepository(IMongoCollection<Entities.Cart> cartsCollection, IProductService productService, AmazonSQSClient amazonSQSClient, IConfiguration configuration)
+        public CartRepository(
+            ILogger<CartRepository> logger,
+            IMapper mapper,
+            IMongoCollection<Entities.Cart> cartsCollection,
+            IProductService productService,
+            AmazonSQSClient amazonSQSClient,
+            IConfiguration configuration)
         {
+            _logger = logger;
+            _mapper = mapper;
             _cartsCollection = cartsCollection;
             _productService = productService;
             _amazonSQSClient = amazonSQSClient;
@@ -155,10 +166,12 @@ namespace Cart.Service.API.Repositories
             databaseCart.ControlId = controlId;
             databaseCart.Status = STATUS_DONE;
 
+            var cartQueueMessage = _mapper.Map<CartQueueMessage>(databaseCart);
+
             await _amazonSQSClient.SendMessageAsync(new SendMessageRequest()
             {
                 QueueUrl = _configuration["AmazonSQSCheckoutQueueURL"],
-                MessageBody = JsonConvert.SerializeObject(databaseCart)
+                MessageBody = JsonConvert.SerializeObject(cartQueueMessage)
             });
 
             await _cartsCollection.ReplaceOneAsync(cart => cart.Id == cartId, databaseCart);
