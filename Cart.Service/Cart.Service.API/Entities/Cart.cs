@@ -16,6 +16,9 @@ namespace Cart.Service.API.Entities
         [BsonElement("status")]
         public string Status { get; set; }
 
+        [BsonElement("controlId")]
+        public string ControlId { get; set; }
+
         [BsonElement("items")]
         public IEnumerable<CartItem> Items { get; set; }
     }

@@ -8,6 +8,6 @@ namespace Cart.Service.API.Repositories
         Task<Entities.Cart> CreateCart(CreateCartRequest payload);
         Task<Entities.Cart> CancelCart(string cartId);
         Task<Entities.Cart> UpdateCartItem(string cartId, UpdateCartItemRequest payload);
-        Task<Entities.Cart> CartCheckout(string cartId, CartCheckoutRequest payload);
+        Task<Entities.Cart> CartCheckout(string cartId, CartCheckoutRequest payload, string controlId);
     }
 }

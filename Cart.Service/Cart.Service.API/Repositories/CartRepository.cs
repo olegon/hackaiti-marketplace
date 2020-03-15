@@ -143,7 +143,7 @@ namespace Cart.Service.API.Repositories
             return databaseCart;
         }
 
-        public async Task<Entities.Cart> CartCheckout(string cartId, CartCheckoutRequest payload)
+        public async Task<Entities.Cart> CartCheckout(string cartId, CartCheckoutRequest payload, string controlId)
         {
             var databaseCart = await GetCartById(cartId);
 
@@ -152,6 +152,7 @@ namespace Cart.Service.API.Repositories
                 throw new InvalidCartException($"Cart {databaseCart.Id} has status {databaseCart.Status}");
             }
 
+            databaseCart.ControlId = controlId;
             databaseCart.Status = STATUS_DONE;
 
             await _amazonSQSClient.SendMessageAsync(new SendMessageRequest()

@@ -68,11 +68,11 @@ namespace cart.service.API.Controllers
         }
 
         [HttpPost("{cartId}/checkout")]
-        public async Task<IActionResult> CartCheckout([FromRoute]string cartId, [FromBody]CartCheckoutRequest payload)
+        public async Task<IActionResult> CartCheckout([FromRoute]string cartId, [FromBody]CartCheckoutRequest payload, [FromHeader(Name = "x-team-control")]string controlId)
         {
-            _logger.LogInformation("CartCheckout: {cartId} {@payload}", cartId, payload);
+            _logger.LogInformation("CartCheckout: {cartId} {@payload} {controlId}", cartId, payload, controlId);
 
-            var cart = await _cartRepository.CartCheckout(cartId, payload);      
+            var cart = await _cartRepository.CartCheckout(cartId, payload, controlId);      
 
             var response = _mapper.Map<CartResponse>(cart);      
 
