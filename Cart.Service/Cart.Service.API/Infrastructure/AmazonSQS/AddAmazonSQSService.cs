@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Amazon.SQS;
+using Amazon;
 
 namespace Cart.Service.API.Infrastructure.AmazonSQS
 {
@@ -10,7 +11,7 @@ namespace Cart.Service.API.Infrastructure.AmazonSQS
         {
             services.AddSingleton<AmazonSQSClient>(serviceProvider =>
             {
-                return new AmazonSQSClient();
+                return new AmazonSQSClient(RegionEndpoint.USEast1);
             });
 
             return services;
