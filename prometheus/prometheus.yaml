@@ -11,25 +11,22 @@ global:
 scrape_configs:
   # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
   - job_name: 'product-service'
-
     # Override the global default and scrape targets from this job every 5 seconds.
     scrape_interval: 5s
-
     static_configs:
       - targets: ['product-service:80']
 
   - job_name: 'cart-service'
-
-    # Override the global default and scrape targets from this job every 5 seconds.
     scrape_interval: 5s
-
     static_configs:
       - targets: ['cart-service:80']
 
   - job_name: 'checkout-service'
-
-    # Override the global default and scrape targets from this job every 5 seconds.
     scrape_interval: 5s
-
     static_configs:
       - targets: ['checkout-service:8080']
+
+  - job_name: 'currency-service'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['currency-service:80']

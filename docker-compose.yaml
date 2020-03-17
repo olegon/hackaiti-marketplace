@@ -45,6 +45,32 @@ services:
     - mongo-checkout-service
     - product-service
 
+  currency-service:
+    build: ./Currency.Service
+    container_name: currency-service
+    ports:
+    - 5100:80
+    environment: 
+    - RedisConnectionString=redis:6379
+    - ZupCurrenciesServiceURI=http://zup-mock-api
+    - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+    - AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+    - AWS_REGION=$AWS_REGION
+    depends_on: 
+    - redis
+
+  zup-mock-api:
+    build: ./zup-mock-api
+    container_name: zup-mock-api
+    ports:
+    - 8085:80
+
+  redis:
+    image: redis
+    container_name: redis
+    ports: 
+    - 6379:6379
+    
   prometheus:
     image: prom/prometheus:v2.1.0
     container_name: prometheus
