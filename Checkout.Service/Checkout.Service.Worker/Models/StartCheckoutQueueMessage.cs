@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 
-namespace Cart.Service.API.Models
+namespace Checkout.Service.Worker.Models
 {
-    public class CartQueueMessage
+    public class StartCheckoutQueueMessage
     {
         public string Id { get; set; }
         public string CustomerId { get; set; }
         public string Status { get; set; }
+        public string CurrencyCode { get; set; }
         public string ControlId { get; set; }
         public IEnumerable<CartItem> Items { get; set; }
 

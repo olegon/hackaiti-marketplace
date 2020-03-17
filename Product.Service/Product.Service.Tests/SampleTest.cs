@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace product.service.Tests
 {
-    public class WeatherForecastControllerTests
+    public class SampleTest
     {
         [SetUp]
         public void Setup()

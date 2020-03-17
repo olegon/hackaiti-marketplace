@@ -28,6 +28,20 @@ services:
     depends_on: 
     - mongo-cart-service
     - product-service
+  
+  checkout-service:
+    build: ./Checkout.Service
+    container_name: checkout-service
+    environment: 
+    - MongoDbConnectionString=mongodb://mongo-checkout-service:27017
+    - AmazonSQSCheckoutQueueURL=https://sqs.us-east-1.amazonaws.com/105029661252/hackati-marketplace-start-checkout
+    - PrometheusPort=8080
+    - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+    - AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+    - AWS_REGION=$AWS_REGION
+    depends_on: 
+    - mongo-checkout-service
+    - product-service
 
   mongo-product-service:
     image: mongo
@@ -36,4 +50,8 @@ services:
   mongo-cart-service:
     image: mongo
     container_name: mongo-cart-service
+
+  mongo-checkout-service:
+    image: mongo
+    container_name: mongo-checkout-service
 

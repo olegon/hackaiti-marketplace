@@ -16,6 +16,9 @@ namespace Cart.Service.API.Entities
         [BsonElement("status")]
         public string Status { get; set; }
 
+        [BsonElement("currencyCode")]
+        public string CurrencyCode { get; set; }
+
         [BsonElement("controlId")]
         public string ControlId { get; set; }
 

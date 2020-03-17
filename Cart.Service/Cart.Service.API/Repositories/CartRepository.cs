@@ -164,9 +164,10 @@ namespace Cart.Service.API.Repositories
             }
 
             databaseCart.ControlId = controlId;
+            databaseCart.CurrencyCode = payload.CurrencyCode;
             databaseCart.Status = STATUS_DONE;
 
-            var cartQueueMessage = _mapper.Map<CartQueueMessage>(databaseCart);
+            var cartQueueMessage = _mapper.Map<StartCheckoutQueueMessage>(databaseCart);
 
             await _amazonSQSClient.SendMessageAsync(new SendMessageRequest()
             {

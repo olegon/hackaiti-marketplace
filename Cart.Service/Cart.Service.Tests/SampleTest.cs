@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace cart.service.Tests
 {
-    public class WeatherForecastControllerTests
+    public class SampleTest
     {
         [SetUp]
         public void Setup()
@@ -17,8 +17,8 @@ namespace cart.service.Tests
         [Test]
         public void Test1()
         {
-            // var loggerMock = new Mock<ILogger<WeatherForecastController>>();
-            // var controller = new WeatherForecastController(loggerMock.Object);
+            // var loggerMock = new Mock<ILogger<ProductsController>>();
+            // var controller = new ProductsController(loggerMock.Object);
             // var result = controller.Get();
             // Assert.AreEqual(5, result.Count());
             Assert.Pass();
