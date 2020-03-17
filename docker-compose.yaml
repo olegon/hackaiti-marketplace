@@ -32,6 +32,8 @@ services:
   checkout-service:
     build: ./Checkout.Service
     container_name: checkout-service
+    ports:
+    - 8080:8080
     environment: 
     - MongoDbConnectionString=mongodb://mongo-checkout-service:27017
     - AmazonSQSCheckoutQueueURL=https://sqs.us-east-1.amazonaws.com/105029661252/hackati-marketplace-start-checkout
@@ -42,6 +44,16 @@ services:
     depends_on: 
     - mongo-checkout-service
     - product-service
+
+  prometheus:
+    image: prom/prometheus:v2.1.0
+    container_name: prometheus
+    volumes:
+      - ./prometheus/:/etc/prometheus/
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yaml'
+    ports:
+      - 9090:9090
 
   mongo-product-service:
     image: mongo

@@ -18,6 +18,7 @@ RUN dotnet publish ./Checkout.Service.Worker/Checkout.Service.Worker.csproj -c R
 
 # Build runtime image
 FROM mcr.microsoft.com/dotnet/core/runtime:3.1
+EXPOSE 8080
 WORKDIR /app
 COPY --from=build-env /app/out .
 ENTRYPOINT ["dotnet", "Checkout.Service.Worker.dll"]

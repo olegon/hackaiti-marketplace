@@ -48,8 +48,8 @@ namespace Checkout.Service.Worker
         private static void ConfigurePrometheusListener(IConfigurationRoot configuration)
         {
             var port = int.Parse(configuration["PrometheusPort"]);
-            Log.Information("Starting Prometheus listener at {uri}", $"localhost:{port}");
-            var server = new MetricServer(hostname: "localhost", port: port);
+            Log.Information("Starting Prometheus listener at {uri}", $"+:{port}");
+            var server = new MetricServer(hostname: "+", port: port);
             server.Start();
         }
 

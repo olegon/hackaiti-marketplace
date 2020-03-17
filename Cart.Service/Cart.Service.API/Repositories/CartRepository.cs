@@ -165,8 +165,7 @@ namespace Cart.Service.API.Repositories
 
             databaseCart.ControlId = controlId;
             databaseCart.CurrencyCode = payload.CurrencyCode;
-            databaseCart.Status = STATUS_DONE;
-
+            
             var cartQueueMessage = _mapper.Map<StartCheckoutQueueMessage>(databaseCart);
 
             await _amazonSQSClient.SendMessageAsync(new SendMessageRequest()
@@ -174,6 +173,8 @@ namespace Cart.Service.API.Repositories
                 QueueUrl = _configuration["AmazonSQSCheckoutQueueURL"],
                 MessageBody = JsonConvert.SerializeObject(cartQueueMessage)
             });
+
+            databaseCart.Status = STATUS_DONE;
 
             await _cartsCollection.ReplaceOneAsync(cart => cart.Id == cartId, databaseCart);
 
