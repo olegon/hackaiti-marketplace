@@ -8,9 +8,9 @@
     "NUnit"
   ],
   "name": "HackaIti WebAPI template",
-  "identity": "hackati.templates.webapi",
-  "groupIdentity": "hackati.templates",
-  "shortName": "hackati-webapi",
+  "identity": "hackaiti.templates.webapi",
+  "groupIdentity": "hackaiti.templates",
+  "shortName": "hackaiti-webapi",
   "tags": {
     "language": "C#",
     "type": "project"

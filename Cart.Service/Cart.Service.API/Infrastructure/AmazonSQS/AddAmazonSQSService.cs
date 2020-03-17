@@ -11,7 +11,7 @@ namespace Cart.Service.API.Infrastructure.AmazonSQS
         {
             services.AddSingleton<AmazonSQSClient>(serviceProvider =>
             {
-                return new AmazonSQSClient(RegionEndpoint.USEast1);
+                return new AmazonSQSClient();
             });
 
             return services;
