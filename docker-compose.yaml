@@ -72,7 +72,7 @@ services:
     - 6379:6379
     
   prometheus:
-    image: prom/prometheus:v2.1.0
+    image: prom/prometheus
     container_name: prometheus
     volumes:
       - ./prometheus/:/etc/prometheus/
