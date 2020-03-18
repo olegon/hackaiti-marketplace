@@ -15,10 +15,10 @@ namespace currency.service.API.Controllers
     public class CurrenciesController : ControllerBase
     {
         private readonly ILogger<CurrenciesController> _logger;
-        private ICurrencyCacheService _currencyCacheService;
+        private ICurrencyService _currencyCacheService;
         private readonly IMapper _mapper;
 
-        public CurrenciesController(ILogger<CurrenciesController> logger, IMapper mapper, ICurrencyCacheService currencyCacheService)
+        public CurrenciesController(ILogger<CurrenciesController> logger, IMapper mapper, ICurrencyService currencyCacheService)
         {
             _logger = logger;
             _currencyCacheService = currencyCacheService;
@@ -28,12 +28,7 @@ namespace currency.service.API.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var currencies = await _currencyCacheService.GetCurrencies();
-
-            var response = new GetCurrenciesResponse()
-            {
-                Currencies = _mapper.Map<IEnumerable<GetCurrenciesResponse.Currency>>(currencies)
-            };
+            var response = await _currencyCacheService.GetCurrencies();
 
             return Ok(response);
         }
