@@ -11,7 +11,7 @@ RUN dotnet restore
 COPY . ./
 
 # Run unit tests
-# RUN dotnet test Checkout.Service.UnitTests/Checkout.Service.UnitTests.csproj /p:CollectCoverage=true
+RUN dotnet test Checkout.Service.UnitTests/Checkout.Service.UnitTests.csproj /p:CollectCoverage=true
 
 # Build aplication release
 RUN dotnet publish ./Checkout.Service.Worker/Checkout.Service.Worker.csproj -c Release -o out
