@@ -4,10 +4,13 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using Checkout.Service.Worker.Infrastructure.AmazonSQS;
+using Checkout.Service.Worker.Infrastructure.AutoMapper;
+using Checkout.Service.Worker.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Prometheus;
+using Refit;
 using Serilog;
 
 namespace Checkout.Service.Worker
@@ -58,6 +61,20 @@ namespace Checkout.Service.Worker
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddAmazonSQS(hostContext.Configuration);
+
+                    services.AddAutoMapper();
+
+                    services.AddSingleton<ICurrencyService>(serviceProvider =>
+                    {
+                        return RestService.For<ICurrencyService>(hostContext.Configuration["CurrencyServiceURI"]);
+                    });
+
+                     services.AddSingleton<IInvoiceService>(serviceProvider =>
+                    {
+                        return RestService.For<IInvoiceService>(hostContext.Configuration["ZupInvoiceServiceURI"]);
+                    });
+
+                    
 
                     services.AddHostedService<StartCheckoutWorker>();
                 })

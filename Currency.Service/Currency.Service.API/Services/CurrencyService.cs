@@ -61,6 +61,9 @@ namespace Currency.Service.API.Services
 
             return new Dictionary<string, double>()
             {
+                { "USD_TO_USD", 1.0 },
+                { "BRL_TO_BRL", 1.0 },
+                { "EUR_TO_EUR", 1.0 },
                 { "USD_TO_BRL", usd2brl_factor },
                 { "USD_TO_EUR", usd2eur_factor },
                 { "BRL_TO_USD", brl2usd_factor },

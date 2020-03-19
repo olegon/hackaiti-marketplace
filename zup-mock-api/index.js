@@ -1,6 +1,12 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const morgan = require('morgan');
 
 const app = express();
+
+app.use(morgan('combined'));
+
+app.use(bodyParser.json());
 
 app.get('/currencies', (_, res) => {
     res.json([
@@ -15,7 +21,20 @@ app.get('/currencies', (_, res) => {
             "scale": 2
         }
     ]);
-})
+});
+
+app.post('/invoices', (req, res) => {
+    console.log(req.body);
+    
+    const rnd = Math.random();
+
+    if (rnd < 0.1) {
+        res.status(500).send();
+    }
+    else {
+        res.status(200).send();
+    }
+});
 
 const serverPort = process.env.SERVER_PORT || 80;
 
