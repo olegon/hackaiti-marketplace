@@ -17,7 +17,7 @@ namespace Cart.Service.API.Infrastructure.MongoDB
             {
                 var client = serviceProvider.GetService<IMongoClient>();
 
-                return client.GetDatabase("hackati_carts");
+                return client.GetDatabase("hackaiti_carts");
             });
 
             services.AddTransient<IMongoCollection<Entities.Cart>>(serviceProvider =>

@@ -11,7 +11,7 @@ async function run() {
             await addItemsToCart(createCartResponse.id);
 
             const checkoutCartResponse = await checkoutCart(createCartResponse.id, choose(availablecurrencyCodes));
-            console.log(checkoutCartResponse);
+            console.log(checkoutCartResponse.id);
         }
         catch (error) {
             console.error(error)
@@ -26,7 +26,7 @@ async function createCart() {
         'customerId': random(0, 1_000_000).toString(),
         'item': {
             'sku': product.sku,
-            'quantity': random(0, 10) + 1
+            'quantity': random(0, 1_000) + 1
         }
     };
 
@@ -36,7 +36,7 @@ async function createCart() {
 }
 
 async function addItemsToCart(cartId) {
-    const howManyItems = random(0, 15);
+    const howManyItems = random(0, 5);
 
     for (let i = 0; i < howManyItems; i++) {
         const addItemToCartResponse =  await addItemToCart(cartId);
@@ -50,7 +50,7 @@ async function addItemToCart(cartId) {
 
     const payload = {
         'sku': product.sku,
-        'quantity': random(0, 10) + 1
+        'quantity': random(0, 1_000) + 1
     };
 
     const { data } = await axios.patch(`http://localhost:5050/carts/${cartId}/items`, payload);

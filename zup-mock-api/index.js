@@ -24,7 +24,10 @@ app.get('/currencies', (_, res) => {
 });
 
 app.post('/invoices', (req, res) => {
-    console.log(req.body);
+    console.log({
+        headers: req.headers,
+        body: JSON.stringify(req.body, null, 4)
+    });
     
     const rnd = Math.random();
 

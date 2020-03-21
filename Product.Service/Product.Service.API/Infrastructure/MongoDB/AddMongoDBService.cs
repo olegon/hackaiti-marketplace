@@ -17,7 +17,7 @@ namespace Product.Service.API.Infrastructure.MongoDB
             {
                 var client = serviceProvider.GetService<IMongoClient>();
 
-                return client.GetDatabase("hackati_products");
+                return client.GetDatabase("hackaiti_products");
             });
 
             services.AddTransient<IMongoCollection<Entities.Product>>(serviceProvider =>
