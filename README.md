@@ -4,7 +4,6 @@ Minha solução do Hackaton Iti Marketplace Edition! :p
 
 ##  Para fazer
 
-- publicar timeline no Kafka;
 - adicionar validação de entidades e erros explicativos;
 - persistir informações no Checkout.Service;
 - repensar estratégia de redelivery e dlc;

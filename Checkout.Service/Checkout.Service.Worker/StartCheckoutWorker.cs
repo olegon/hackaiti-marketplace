@@ -23,6 +23,7 @@ namespace Checkout.Service.Worker
         private readonly AmazonSQSClient _amazonSQSClient;
         private readonly ICurrencyService _currencyService;
         private readonly IInvoiceService _invoiceService;
+        private readonly ITimelineService _timelineService;
 
         public StartCheckoutWorker(
             IConfiguration configuration,
@@ -30,7 +31,8 @@ namespace Checkout.Service.Worker
             IMapper mapper,
             AmazonSQSClient amazonSQSClient,
             ICurrencyService currencyService,
-            IInvoiceService invoiceService)
+            IInvoiceService invoiceService,
+            ITimelineService timelineService)
         {
             _configuration = configuration;
             _logger = logger;
@@ -38,6 +40,7 @@ namespace Checkout.Service.Worker
             _amazonSQSClient = amazonSQSClient;
             _currencyService = currencyService;
             _invoiceService = invoiceService;
+            _timelineService = timelineService;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -80,13 +83,42 @@ namespace Checkout.Service.Worker
             var request = _mapper.Map<CartInvoiceRequest>(checkout);
 
             request.Total = await CalculateTotal(checkout);
+            
+            _logger.LogInformation("Sending invoice request: {@request}", request);
 
             await _invoiceService.SendInvoice(request, checkout.ControlId);
+
+            await SendToTimeline(checkout, request);
+        }
+
+        private async Task SendToTimeline(StartCheckoutQueueMessage checkout, CartInvoiceRequest request)
+        {
+            var timelineEvent = new TimelineOrderEvent()
+            {
+                Headers = new TimelineOrderEvent.TimelineOrderEventHeaders()
+                {
+                    ControlId = checkout.ControlId
+                },
+                Payload = new TimelineOrderEvent.TimelineOrderEventPayload()
+                {
+                    CartId = checkout.Id,
+                    Price = new TimelineOrderEvent.TimelineOrderEventPayload.TimelineOrderEventPayloadPrice()
+                    {
+                        Amount = request.Total.Amount,
+                        CurrencyCode = request.Total.CurrencyCode,
+                        Scale = request.Total.Scale
+                    }
+                }
+            };
+            
+            await _timelineService.PublishTimelineOrderEvent(timelineEvent);
         }
 
         private async Task<CartInvoiceRequest.CartTotal> CalculateTotal(StartCheckoutQueueMessage checkout)
         {
-            var currencyTable = await _currencyService.GetCurrencies();
+            var currenciesResponse = await _currencyService.GetCurrencies();
+
+            _logger.LogInformation("Current currencies values: {@currencies}", currenciesResponse);
 
             var total = new CartInvoiceRequest.CartTotal()
             {
@@ -97,13 +129,15 @@ namespace Checkout.Service.Worker
 
             foreach (var item in checkout.Items)
             {
-                var factor = currencyTable.Factors[$"{item.CurrencyCode}_TO_{checkout.CurrencyCode}"];
+                var factor = currenciesResponse.Factors[$"{item.CurrencyCode}_TO_{checkout.CurrencyCode}"];
 
                 var currencPrice = item.Price / Math.Pow(10, item.Scale);
                 var desidedPrice = currencPrice * factor * 100;
 
                 total.Amount += (int)desidedPrice;
             }
+
+            _logger.LogInformation("Cart total: {@total}", total);
 
             return total;
         }

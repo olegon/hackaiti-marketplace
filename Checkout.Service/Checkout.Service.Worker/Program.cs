@@ -69,12 +69,12 @@ namespace Checkout.Service.Worker
                         return RestService.For<ICurrencyService>(hostContext.Configuration["CurrencyServiceURI"]);
                     });
 
-                     services.AddSingleton<IInvoiceService>(serviceProvider =>
+                    services.AddSingleton<IInvoiceService>(serviceProvider =>
                     {
                         return RestService.For<IInvoiceService>(hostContext.Configuration["ZupInvoiceServiceURI"]);
                     });
 
-                    
+                    services.AddSingleton<ITimelineService, TimeLineService>();
 
                     services.AddHostedService<StartCheckoutWorker>();
                 })

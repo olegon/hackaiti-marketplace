@@ -39,11 +39,14 @@ services:
     - PrometheusPort=8080
     - CurrencyServiceURI=http://currency-service
     - ZupInvoiceServiceURI=http://zup-mock-api
+    - KafkaBootstrapServers=kafka:9092
+    - KafkaTimelineOrderTopicName=orders_topic
     - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
     - AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
     - AWS_REGION=$AWS_REGION
     depends_on:
-    - zup-mock-api  
+    - zup-mock-api
+    - kafka
 
   currency-service:
     build: ./Currency.Service
@@ -96,3 +99,17 @@ services:
   mongo-cart-service:
     image: mongo
     container_name: mongo-cart-service
+
+  zookeper:
+    image: confluent/zookeeper
+    container_name: zookeeper
+    ports:
+    - 2181:2181
+
+  kafka:
+    image: confluent/kafka
+    container_name: kafka
+    ports:
+    - 9092:9092
+    depends_on:
+    - zookeper
