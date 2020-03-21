@@ -1,0 +1,242 @@
+[
+    {
+        "sku": "AAA113",
+        "name": "Keyboark",
+        "shortDescription": "Keyboard White",
+        "longDescription": "Keyboard Batery White",
+        "imageUrl": "https://iti.itau/i/keyboard.png",
+        "price": {
+            "amount": 20000,
+            "scale": 2,
+            "currencyCode": "EUR"
+        }
+    },
+    {
+        "sku": "BBB1012",
+        "name": "Xiaomi Watch",
+        "shortDescription": "Xiaomi Watch GTR",
+        "longDescription": "Xiaomi Watch GTR 4GB",
+        "imageUrl": "https://iti.itau/i/xiaomiwatch.png",
+        "price": {
+            "amount": 35999,
+            "scale": 2,
+            "currencyCode": "EUR"
+        }
+    },
+    {
+        "sku": "BBB1015",
+        "name": "Amazon Kindle",
+        "shortDescription": "Amazon Kindle 2",
+        "longDescription": "Amazon Kindle 2 Paper White",
+        "imageUrl": "https://iti.itau/i/kindle.png",
+        "price": {
+            "amount": 30000,
+            "scale": 2,
+            "currencyCode": "BRL"
+        }
+    },
+    {
+        "sku": "BBB1010",
+        "name": "Moto G8",
+        "shortDescription": "Motorola Moto G8",
+        "longDescription": "Motorola Moto G8 64GB",
+        "imageUrl": "https://iti.itau/i/motog8.png",
+        "price": {
+            "amount": 89999,
+            "scale": 2,
+            "currencyCode": "BRL"
+        }
+    },
+    {
+        "sku": "AAA112",
+        "name": "Magic Mouse",
+        "shortDescription": "MagicMouse White",
+        "longDescription": "Magic Mouse White",
+        "imageUrl": "https://iti.itau/i/magicmouse.png",
+        "price": {
+            "amount": 36580,
+            "scale": 2,
+            "currencyCode": "BRL"
+        }
+    },
+    {
+        "sku": "BBB1018",
+        "name": "Caneca Inteligente",
+        "shortDescription": "Caneca Inteligente Xiaomi",
+        "longDescription": "Caneca Inteligente Xiaomi",
+        "imageUrl": "https://iti.itau/i/caneca.png",
+        "price": {
+            "amount": 14990,
+            "scale": 2,
+            "currencyCode": "BRL"
+        }
+    },
+    {
+        "sku": "BBB1019",
+        "name": "Apple TV",
+        "shortDescription": "Apple TV 4k",
+        "longDescription": "Apple TV 4k",
+        "imageUrl": "https://iti.itau/i/appletv.png",
+        "price": {
+            "amount": 109900,
+            "scale": 2,
+            "currencyCode": "BRL"
+        }
+    },
+    {
+        "sku": "AAA115",
+        "name": "iPad",
+        "shortDescription": "iPad White",
+        "longDescription": "iPad White 128GB",
+        "imageUrl": "https://iti.itau/i/ipad.png",
+        "price": {
+            "amount": 200000,
+            "scale": 2,
+            "currencyCode": "BRL"
+        }
+    },
+    {
+        "sku": "CCC1020",
+        "name": "Chromecast",
+        "shortDescription": "Google Chromecast",
+        "longDescription": "Google Chromecast 2",
+        "imageUrl": "https://iti.itau/i/chromecast.png",
+        "price": {
+            "amount": 8999,
+            "scale": 2,
+            "currencyCode": "EUR"
+        }
+    },
+    {
+        "sku": "BBB1011",
+        "name": "Xiaomi Redmi",
+        "shortDescription": "Xiaomi Redmi 128GB",
+        "longDescription": "Xiaomi Redmi 128GB",
+        "imageUrl": "https://iti.itau/i/redmi.png",
+        "price": {
+            "amount": 119925,
+            "scale": 2,
+            "currencyCode": "BRL"
+        }
+    },
+    {
+        "sku": "BBB1016",
+        "name": "Carregador Ultra",
+        "shortDescription": "Carregador Ultra Rápido",
+        "longDescription": "Carregador Ultra Rápido BiVolt",
+        "imageUrl": "https://iti.itau/i/carregador.png",
+        "price": {
+            "amount": 99,
+            "scale": 2,
+            "currencyCode": "EUR"
+        }
+    },
+    {
+        "sku": "BBB1014",
+        "name": "Amazon Alexa",
+        "shortDescription": "Amazon Alexa Echo Dot",
+        "longDescription": "Amazon Alexa Echo Dot 3",
+        "imageUrl": "https://iti.itau/i/echodot.png",
+        "price": {
+            "amount": 19955,
+            "scale": 2,
+            "currencyCode": "USD"
+        }
+    },
+    {
+        "sku": "AAA114",
+        "name": "iPhone",
+        "shortDescription": "iPhone 10",
+        "longDescription": "iPhone 10 64GB",
+        "imageUrl": "https://iti.itau/i/iphone.png",
+        "price": {
+            "amount": 69990,
+            "scale": 2,
+            "currencyCode": "USD"
+        }
+    },
+    {
+        "sku": "AAA118",
+        "name": "Galaxy Watch",
+        "shortDescription": "Samsung Galaxy Watch",
+        "longDescription": "Samsung Galaxy Watch",
+        "imageUrl": "https://iti.itau/i/galaxywatch.png",
+        "price": {
+            "amount": 49999,
+            "scale": 2,
+            "currencyCode": "USD"
+        }
+    },
+    {
+        "sku": "BBB1017",
+        "name": "Cabo USB",
+        "shortDescription": "Cabo USB-C",
+        "longDescription": "Cabo USB-C",
+        "imageUrl": "https://iti.itau/i/cabo.png",
+        "price": {
+            "amount": 199,
+            "scale": 2,
+            "currencyCode": "USD"
+        }
+    },
+    {
+        "sku": "BBB1013",
+        "name": "Notebook HP",
+        "shortDescription": "Notebook HP Probook",
+        "longDescription": "Notebook HP Probook 6GB",
+        "imageUrl": "https://iti.itau/i/probook.png",
+        "price": {
+            "amount": 559999,
+            "scale": 2,
+            "currencyCode": "BRL"
+        }
+    },
+    {
+        "sku": "AAA116",
+        "name": "Apple Watch",
+        "shortDescription": "Apple Watch 4",
+        "longDescription": "Apple Watch 4",
+        "imageUrl": "https://iti.itau/i/watch.png",
+        "price": {
+            "amount": 89999,
+            "scale": 2,
+            "currencyCode": "EUR"
+        }
+    },
+    {
+        "sku": "AAA111",
+        "name": "MacBook",
+        "shortDescription": "MacBook Pro",
+        "longDescription": "MacBook Pro i7 16Gb",
+        "imageUrl": "https://iti.itau/i/mac.png",
+        "price": {
+            "amount": 199999,
+            "scale": 2,
+            "currencyCode": "USD"
+        }
+    },
+    {
+        "sku": "AAA119",
+        "name": "Notebook Dell",
+        "shortDescription": "Notebook Dell Latitude",
+        "longDescription": "Notebook Dell Latitude 7300",
+        "imageUrl": "https://iti.itau/i/latitude.png",
+        "price": {
+            "amount": 189999,
+            "scale": 2,
+            "currencyCode": "EUR"
+        }
+    },
+    {
+        "sku": "AAA117",
+        "name": "Galaxy 10",
+        "shortDescription": "Samsung Galaxy 10",
+        "longDescription": "Samsung Galaxy 10 64GB",
+        "imageUrl": "https://iti.itau/i/galaxy10.png",
+        "price": {
+            "amount": 219990,
+            "scale": 2,
+            "currencyCode": "BRL"
+        }
+    }
+]

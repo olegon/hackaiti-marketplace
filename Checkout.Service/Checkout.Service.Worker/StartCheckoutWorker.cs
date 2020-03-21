@@ -80,15 +80,23 @@ namespace Checkout.Service.Worker
 
             var checkout = JsonConvert.DeserializeObject<StartCheckoutQueueMessage>(sqsMessage.Body);
 
-            var request = _mapper.Map<CartInvoiceRequest>(checkout);
+            var scopeState = new Dictionary<string, string>()
+            {
+                { "cartId", checkout.Id },
+                { "controlId", checkout.ControlId }
+            };
+            using (var scope = _logger.BeginScope(scopeState))
+            {
+                var request = _mapper.Map<CartInvoiceRequest>(checkout);
 
-            request.Total = await CalculateTotal(checkout);
-            
-            _logger.LogInformation("Sending invoice request: {@request}", request);
+                request.Total = await CalculateTotal(checkout);
 
-            await _invoiceService.SendInvoice(request, checkout.ControlId);
+                _logger.LogInformation("Sending invoice request: {@request}", request);
 
-            await SendToTimeline(checkout, request);
+                await _invoiceService.SendInvoice(request, checkout.ControlId);
+
+                await SendToTimeline(checkout, request);
+            }
         }
 
         private async Task SendToTimeline(StartCheckoutQueueMessage checkout, CartInvoiceRequest request)
@@ -110,7 +118,7 @@ namespace Checkout.Service.Worker
                     }
                 }
             };
-            
+
             await _timelineService.PublishTimelineOrderEvent(timelineEvent);
         }
 
@@ -151,8 +159,8 @@ namespace Checkout.Service.Worker
             var request = new ReceiveMessageRequest()
             {
                 QueueUrl = queueUrl,
-                MaxNumberOfMessages = 1,
-                VisibilityTimeout = 60,
+                MaxNumberOfMessages = 10,
+                VisibilityTimeout = 5 * 60,
                 WaitTimeSeconds = 15
             };
 
