@@ -15,18 +15,26 @@ scrape_configs:
     scrape_interval: 5s
     static_configs:
       - targets: ['product-service:80']
+        labels:
+          group: 'hackaiti-marketplace'
 
   - job_name: 'cart-service'
     scrape_interval: 5s
     static_configs:
       - targets: ['cart-service:80']
+        labels:
+          group: 'hackaiti-marketplace'
 
   - job_name: 'checkout-service'
     scrape_interval: 5s
     static_configs:
       - targets: ['checkout-service:8080']
+        labels:
+          group: 'hackaiti-marketplace'
 
   - job_name: 'currency-service'
     scrape_interval: 5s
     static_configs:
       - targets: ['currency-service:80']
+        labels:
+          group: 'hackaiti-marketplace'
