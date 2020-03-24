@@ -79,14 +79,7 @@ namespace product.service.API.Controllers
 
             var product = _mapper.Map<Product.Service.API.Entities.Product>(payload);
 
-            try
-            {
-                await _productRepository.AddProduct(product);
-            }
-            catch (DuplicatedSkuException ex)
-            {
-                return UnprocessableEntity(ex.Message);
-            }
+            await _productRepository.AddProduct(product);
 
             var response = _mapper.Map<ProductResponse>(product);
 

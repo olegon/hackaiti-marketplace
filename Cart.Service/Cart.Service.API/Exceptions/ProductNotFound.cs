@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace Cart.Service.API.Exceptions
 {
     [Serializable]
-    internal class ProductNotFound : Exception
+    internal class ProductNotFound : BusinessException
     {
         public ProductNotFound()
         {

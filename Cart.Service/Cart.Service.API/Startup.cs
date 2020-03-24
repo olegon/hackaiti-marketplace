@@ -20,6 +20,9 @@ using Cart.Service.API.Repositories;
 using Cart.Service.API.Services;
 using Refit;
 using Cart.Service.API.Infrastructure.AmazonSQS;
+using Cart.Service.API.Infrastructure.Filters;
+using FluentValidation.AspNetCore;
+using Cart.Service.API.Validators;
 
 namespace cart.service.API
 {
@@ -36,7 +39,14 @@ namespace cart.service.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers(options =>
+            {
+                options.Filters.Add<BusinessExceptionFilter>();
+            })
+            .AddFluentValidation(config =>
+            {
+                config.RegisterValidatorsFromAssemblyContaining<CreateCartRequestValidator>();
+            });
 
             services.AddAutoMapper(typeof(CartProfile).Assembly);
 

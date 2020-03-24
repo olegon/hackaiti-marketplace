@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace Cart.Service.API.Exceptions
 {
     [Serializable]
-    internal class InvalidCartException : Exception
+    internal class InvalidCartException : BusinessException
     {
         public InvalidCartException()
         {

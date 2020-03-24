@@ -22,7 +22,7 @@ namespace Product.Service.API.Repositories
 
             if (productDatabase != null)
             {
-                throw new DuplicatedSkuException($"Já existe um produto com o SKU {product.SKU}");
+                throw new DuplicatedSkuException($"There is already a product with SKU {product.SKU}");
             }
 
             await _productsCollection.InsertOneAsync(product);

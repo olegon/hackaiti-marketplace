@@ -48,20 +48,32 @@ namespace Cart.Service.API.Repositories
 
         public async Task<Entities.Cart> GetCartById(string cartId)
         {
-            var databaseCarts = await _cartsCollection.FindAsync(cart => cart.Id == cartId);
-            var databaseCart = databaseCarts.SingleOrDefault();
-
-            if (databaseCart == null)
+            try
             {
-                throw new CartNotFoundException();
-            }
+                var databaseCarts = await _cartsCollection.FindAsync(cart => cart.Id == cartId);
+                var databaseCart = databaseCarts.SingleOrDefault();
 
-            return databaseCart;
+                return databaseCart;
+            }
+            catch (FormatException)
+            {
+                throw new CartNotFoundException($"Cart {cartId} not found");
+            }
         }
 
         public async Task<Entities.Cart> CancelCart(string cartId)
         {
             var databaseCart = await GetCartById(cartId);
+
+            if (databaseCart == null)
+            {
+                throw new CartNotFoundException($"Cart {cartId} not found");
+            }
+
+            if (databaseCart.Status != STATUS_PENDING)
+            {
+                throw new InvalidCartException($"Cart {databaseCart.Id} has status {databaseCart.Status}");
+            }
 
             databaseCart.Status = STATUS_CANCELED;
 
@@ -103,13 +115,18 @@ namespace Cart.Service.API.Repositories
             }
             catch (ValidationApiException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
             {
-                throw new ProductNotFound();
+                throw new ProductNotFound($"There is not a product with SKU {sku}");
             }
         }
 
         public async Task<Entities.Cart> UpdateCartItem(string cartId, UpdateCartItemRequest payload)
         {
             var databaseCart = await GetCartById(cartId);
+
+            if (databaseCart == null)
+            {
+                throw new CartNotFoundException($"Cart {cartId} not found");
+            }            
 
             if (databaseCart.Status != STATUS_PENDING)
             {
@@ -118,7 +135,7 @@ namespace Cart.Service.API.Repositories
 
             var requiredCartItem = databaseCart.Items.SingleOrDefault(item => item.Product.SKU == payload.SKU);
 
-            if (requiredCartItem == null)
+            if (requiredCartItem == null && payload.Quantity > 0)
             {
                 var product = await GetProductBySKU(payload.SKU);
 
@@ -134,19 +151,19 @@ namespace Cart.Service.API.Repositories
 
                 databaseCart.Items = newCartItems;
             }
-            else
+            else if (requiredCartItem != null)
             {
                 requiredCartItem.Quantity += payload.Quantity;
                 requiredCartItem.Price = requiredCartItem.Product.Price.Amount * requiredCartItem.Quantity;
 
-                if (requiredCartItem.Quantity == 0)
+                if (requiredCartItem.Quantity <= 0)
                 {
                     databaseCart.Items = databaseCart.Items.Where(cartItem => cartItem.Product.SKU != payload.SKU);
                 }
-                else if (requiredCartItem.Quantity < 0)
-                {
-                    throw new InvalidCartException($"Item SKU {payload.SKU} has less than 0 quantity");
-                }
+            }
+            else
+            {
+                return databaseCart;
             }
 
             await _cartsCollection.ReplaceOneAsync(cart => cart.Id == cartId, databaseCart);
@@ -157,6 +174,11 @@ namespace Cart.Service.API.Repositories
         public async Task<Entities.Cart> CartCheckout(string cartId, CartCheckoutRequest payload, string controlId)
         {
             var databaseCart = await GetCartById(cartId);
+
+            if (databaseCart == null)
+            {
+                throw new CartNotFoundException($"Cart {cartId} not found");
+            }
 
             if (databaseCart.Status != STATUS_PENDING)
             {

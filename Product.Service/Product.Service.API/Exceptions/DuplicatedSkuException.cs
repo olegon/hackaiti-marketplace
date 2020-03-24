@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace Product.Service.API.Exceptions
 {
     [Serializable]
-    public class DuplicatedSkuException : Exception
+    public class DuplicatedSkuException : BusinessException
     {
         public DuplicatedSkuException()
         {

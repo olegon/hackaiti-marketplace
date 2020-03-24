@@ -80,6 +80,5 @@ namespace cart.service.API.Controllers
 
             return Ok(response);
         }
-        
     }
 }

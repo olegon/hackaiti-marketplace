@@ -15,9 +15,11 @@ using Serilog;
 using System.Diagnostics.CodeAnalysis;
 using AutoMapper;
 using Product.Service.API.Infrastrcture.AutoMapper;
-using MongoDB.Driver;
 using Product.Service.API.Infrastructure.MongoDB;
 using Product.Service.API.Repositories;
+using FluentValidation.AspNetCore;
+using Product.Service.API.Validators;
+using Product.Service.API.Infrastructure.Filters;
 
 namespace product.service.API
 {
@@ -34,8 +36,15 @@ namespace product.service.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
-            
+            services.AddControllers(options =>
+            {
+                options.Filters.Add<BusinessExceptionFilter>();
+            })
+            .AddFluentValidation(config =>
+            {
+                config.RegisterValidatorsFromAssemblyContaining<CreateProductRequestValidator>();
+            });
+
             services.AddAutoMapper(typeof(ProductProfile).Assembly);
 
             services.AddMongoDB(Configuration);
