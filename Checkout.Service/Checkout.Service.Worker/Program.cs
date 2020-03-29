@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+using Checkout.Service.API.Infrastructure.OpenTracing;
 using Checkout.Service.Worker.Infrastructure.AmazonSQS;
 using Checkout.Service.Worker.Infrastructure.AutoMapper;
 using Checkout.Service.Worker.Services;
@@ -61,6 +62,8 @@ namespace Checkout.Service.Worker
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
+                    services.AddJaegerOpenTracing();
+                    
                     services.AddMediatR(typeof(Program).Assembly);
                     
                     services.AddAmazonSQS(hostContext.Configuration);

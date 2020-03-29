@@ -4,8 +4,9 @@ Minha solução do Hackaton Iti Marketplace Edition! :p
 
 ##  Para fazer
 
-- adicionar Open Tracing;
-- refatorar Checkout.Service com MediatR;
+- melhorar Open Tracing;
+	- spans em processamento assíncrona;
+	- dev-X (debug sem crash)
 - repensar estratégia de redelivery e dlc;
 - adicionar testes unitários;
 - adicionar testes integrados;

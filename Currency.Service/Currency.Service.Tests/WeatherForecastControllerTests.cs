@@ -1,6 +1,6 @@
 using NUnit.Framework;
 using Moq;
-using currency.service.API.Controllers;
+using Currency.Service.API.Controllers;
 using Microsoft.Extensions.Logging;
 using System.Linq;
 

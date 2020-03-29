@@ -1,7 +1,7 @@
 using AutoMapper;
 using Cart.Service.API.Models;
 
-namespace Cart.Service.API.Infrastrcture.AutoMapper
+namespace Cart.Service.API.Infrastructure.AutoMapper
 {
     public class CartProfile : Profile
     {

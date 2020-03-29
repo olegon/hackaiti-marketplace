@@ -16,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using OpenTracing;
 
 namespace Checkout.Service.Worker
 {
@@ -23,25 +24,25 @@ namespace Checkout.Service.Worker
     {
         private readonly IConfiguration _configuration;
         private readonly ILogger<StartCheckoutWorker> _logger;
+        private readonly ITracer _tracer;
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
         private readonly AmazonSQSClient _amazonSQSClient;
-        private readonly IHttpInvoiceService _invoiceService;
 
         public StartCheckoutWorker(
             IConfiguration configuration,
             ILogger<StartCheckoutWorker> logger,
+            ITracer tracer,
             IMediator mediator,
             IMapper mapper,
-            AmazonSQSClient amazonSQSClient,
-            IHttpInvoiceService invoiceService)
+            AmazonSQSClient amazonSQSClient)
         {
             _configuration = configuration;
             _logger = logger;
+            _tracer = tracer;
             _mediator = mediator;
             _mapper = mapper;
             _amazonSQSClient = amazonSQSClient;
-            _invoiceService = invoiceService;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -52,11 +53,12 @@ namespace Checkout.Service.Worker
 
                 foreach (var sqsMessage in receiveMessageResponse.Messages)
                 {
+                    using (var scope = _tracer.BuildSpan("ProcessingMessage").StartActive(finishSpanOnDispose: true))
                     using (var ctx = _logger.BeginScope(new Dictionary<string, string>() { { "ReceiptHandle", sqsMessage.ReceiptHandle } }))
                     {
                         try
                         {
-                            await ConsumeMessage(sqsMessage);
+                            await ConsumeMessage(sqsMessage, scope);
 
                             await _amazonSQSClient.DeleteMessageAsync(new DeleteMessageRequest()
                             {
@@ -92,18 +94,21 @@ namespace Checkout.Service.Worker
             return _amazonSQSClient.ReceiveMessageAsync(request, stoppingToken);
         }
 
-        private async Task ConsumeMessage(Message sqsMessage)
+        private async Task ConsumeMessage(Message sqsMessage, IScope scope)
         {
             _logger.LogInformation("Received message: {@message}", sqsMessage);
 
             var startCheckoutMessage = JsonConvert.DeserializeObject<StartCheckoutQueueMessage>(sqsMessage.Body);
 
+            scope.Span.SetBaggageItem("cartId", startCheckoutMessage.Id);
+            scope.Span.SetBaggageItem("controlId", startCheckoutMessage.ControlId);
+            
             var scopeState = new Dictionary<string, string>()
             {
                 { "cartId", startCheckoutMessage.Id },
                 { "controlId", startCheckoutMessage.ControlId }
             };
-            using (var scope = _logger.BeginScope(scopeState))
+            using (var loggerScope = _logger.BeginScope(scopeState))
             {
                 var sendToInvoiceResponse = await _mediator.Send(new SendToInvoiceRequest()
                 {

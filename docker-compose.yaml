@@ -6,12 +6,17 @@ services:
     ports:
     - "5000:80"
     environment: 
+    - JAEGER_SERVICE_NAME=Product.Service
+    - JAEGER_ENDPOINT=http://jaeger:14268/api/traces
+    - JAEGER_SAMPLER_TYPE=const
+    - JAEGER_SAMPLER_PARAM=1
     - MongoDbConnectionString=mongodb://mongo-product-service:27017
     - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
     - AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
     - AWS_REGION=$AWS_REGION
     depends_on: 
     - mongo-product-service
+    - jaeger
 
   cart-service:
     build: ./Cart.Service
@@ -19,6 +24,10 @@ services:
     ports:
     - "5050:80"
     environment: 
+    - JAEGER_SERVICE_NAME=Cart.Service
+    - JAEGER_ENDPOINT=http://jaeger:14268/api/traces
+    - JAEGER_SAMPLER_TYPE=const
+    - JAEGER_SAMPLER_PARAM=1
     - MongoDbConnectionString=mongodb://mongo-cart-service:27017
     - ProductServiceURI=http://product-service
     - AmazonSQSCheckoutQueueURL=https://sqs.us-east-1.amazonaws.com/105029661252/hackaiti-marketplace-start-checkout
@@ -28,6 +37,7 @@ services:
     depends_on: 
     - mongo-cart-service
     - product-service
+    - jaeger
   
   checkout-service:
     build: ./Checkout.Service
@@ -35,6 +45,10 @@ services:
     ports:
     - 8080:8080
     environment: 
+    - JAEGER_SERVICE_NAME=Checkout.Service
+    - JAEGER_ENDPOINT=http://jaeger:14268/api/traces
+    - JAEGER_SAMPLER_TYPE=const
+    - JAEGER_SAMPLER_PARAM=1
     - AmazonSQSCheckoutQueueURL=https://sqs.us-east-1.amazonaws.com/105029661252/hackaiti-marketplace-start-checkout
     - PrometheusPort=8080
     - CurrencyServiceURI=http://currency-service
@@ -47,6 +61,7 @@ services:
     depends_on:
     - zup-mock-api
     - kafka
+    - jaeger
 
   currency-service:
     build: ./Currency.Service
@@ -54,6 +69,10 @@ services:
     ports:
     - 5100:80
     environment: 
+    - JAEGER_SERVICE_NAME=Currency.Service
+    - JAEGER_ENDPOINT=http://jaeger:14268/api/traces
+    - JAEGER_SAMPLER_TYPE=const
+    - JAEGER_SAMPLER_PARAM=1
     - RedisConnectionString=redis:6379
     - ZupCurrenciesServiceURI=http://zup-mock-api
     - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
@@ -62,6 +81,7 @@ services:
     depends_on: 
     - redis
     - zup-mock-api
+    - jaeger
 
   zup-mock-api:
     build: ./zup-mock-api
@@ -100,6 +120,21 @@ services:
     depends_on: 
     - prometheus
 
+  jaeger:
+    image: jaegertracing/all-in-one
+    container_name: jaeger
+    ports:
+    - 5775:5775/udp
+    - 6831:6831/udp
+    - 6832:6832/udp
+    - 5778:5778
+    - 16686:16686
+    - 14268:14268
+    - 14250:14250
+    - 9411:9411
+    environment: 
+    - COLLECTOR_ZIPKIN_HTTP_PORT=9411
+  
   mongo-product-service:
     image: mongo
     container_name: mongo-product-service

@@ -14,13 +14,14 @@ using Prometheus;
 using Serilog;
 using System.Diagnostics.CodeAnalysis;
 using AutoMapper;
-using Product.Service.API.Infrastrcture.AutoMapper;
+using Product.Service.API.Infrastructure.AutoMapper;
 using Product.Service.API.Infrastructure.MongoDB;
 using Product.Service.API.Repositories;
 using FluentValidation.AspNetCore;
 using Product.Service.API.Validators;
 using Product.Service.API.Infrastructure.Filters;
 using Microsoft.OpenApi.Models;
+using Product.Service.API.Infrastructure.OpenTracing;
 
 namespace product.service.API
 {
@@ -44,7 +45,9 @@ namespace product.service.API
             .AddFluentValidation(config =>
             {
                 config.RegisterValidatorsFromAssemblyContaining<CreateProductRequestValidator>();
-            });
+            });            
+
+            services.AddJaegerOpenTracing();
 
             services.AddHealthChecks();
 

@@ -1,7 +1,7 @@
 using AutoMapper;
 using Product.Service.API.Model;
 
-namespace Product.Service.API.Infrastrcture.AutoMapper
+namespace Product.Service.API.Infrastructure.AutoMapper
 {
     public class ProductProfile : Profile
     {

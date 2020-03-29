@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace currency.service.API.Controllers
+namespace Currency.Service.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]

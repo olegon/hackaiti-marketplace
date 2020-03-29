@@ -16,6 +16,7 @@ using System.Diagnostics.CodeAnalysis;
 using Microsoft.OpenApi.Models;
 using AutoMapper;
 using hackaiti_webapi_template.API.Infrastructure.AutoMapper;
+using hackaiti_webapi_template.API.Infrastructure.OpenTracing;
 
 namespace hackaiti_webapi_template.API
 {
@@ -33,6 +34,8 @@ namespace hackaiti_webapi_template.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddJaegerOpenTracing();
 
             services.AddHealthChecks();
 

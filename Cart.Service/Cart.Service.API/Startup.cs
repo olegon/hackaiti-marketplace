@@ -13,7 +13,7 @@ using Microsoft.Extensions.Logging;
 using Prometheus;
 using Serilog;
 using System.Diagnostics.CodeAnalysis;
-using Cart.Service.API.Infrastrcture.AutoMapper;
+using Cart.Service.API.Infrastructure.AutoMapper;
 using Cart.Service.API.Infrastructure.MongoDB;
 using AutoMapper;
 using Cart.Service.API.Repositories;
@@ -25,6 +25,7 @@ using FluentValidation.AspNetCore;
 using Cart.Service.API.Validators;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Swagger;
+using Cart.Service.API.Infrastructure.OpenTracing;
 
 namespace cart.service.API
 {
@@ -49,6 +50,8 @@ namespace cart.service.API
             {
                 config.RegisterValidatorsFromAssemblyContaining<CreateCartRequestValidator>();
             });
+
+            services.AddJaegerOpenTracing();
 
             services.AddHealthChecks();
 

@@ -19,6 +19,7 @@ using Refit;
 using AutoMapper;
 using Currency.Service.API.Infrastructure.AutoMapper;
 using Microsoft.OpenApi.Models;
+using Currency.Service.API.Infrastructure.OpenTracing;
 
 namespace currency.service.API
 {
@@ -36,6 +37,8 @@ namespace currency.service.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddJaegerOpenTracing();
 
             services.AddHealthChecks();
 
