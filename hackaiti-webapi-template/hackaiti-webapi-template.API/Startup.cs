@@ -13,6 +13,9 @@ using Microsoft.Extensions.Logging;
 using Prometheus;
 using Serilog;
 using System.Diagnostics.CodeAnalysis;
+using Microsoft.OpenApi.Models;
+using AutoMapper;
+using hackaiti_webapi_template.API.Infrastructure.AutoMapper;
 
 namespace hackaiti_webapi_template.API
 {
@@ -30,6 +33,13 @@ namespace hackaiti_webapi_template.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddAutoMapper(typeof(PingProfile).Assembly);
+            
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "hackaiti-webapi-template API", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,6 +53,13 @@ namespace hackaiti_webapi_template.API
             // app.UseHttpsRedirection();
 
             app.UseSerilogRequestLogging();
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "hackaiti-webapi-template API V1");
+            });
 
             app.UseRouting();
 
