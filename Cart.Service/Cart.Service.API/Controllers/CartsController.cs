@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Cart.Service.API.Models;
 using Cart.Service.API.Repositories;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -26,6 +27,7 @@ namespace cart.service.API.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(typeof(CartResponse), StatusCodes.Status201Created)]
         public async Task<IActionResult> CreateCart([FromBody]CreateCartRequest payload)
         {
             _logger.LogInformation("CreateCartRequest: {@payload}", payload);
@@ -36,10 +38,11 @@ namespace cart.service.API.Controllers
 
             _logger.LogInformation("CreateCartRequest: {@response}", response);
 
-            return Ok(response);
+            return Created($"{response.Id}",response);
         }
 
         [HttpDelete("{cartId}")]
+        [ProducesResponseType(typeof(CartResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> CancelCart([FromRoute]string cartId)
         {
             _logger.LogInformation("CancelCart: {cartId}", cartId);
@@ -54,6 +57,7 @@ namespace cart.service.API.Controllers
         }
 
         [HttpPatch("{cartId}/items")]
+        [ProducesResponseType(typeof(CartResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> UpdateCartItem([FromRoute]string cartId, [FromBody]UpdateCartItemRequest payload)
         {
             _logger.LogInformation("UpdateCartItem: {cartId} {@payload}", cartId, payload);
@@ -68,6 +72,7 @@ namespace cart.service.API.Controllers
         }
 
         [HttpPost("{cartId}/checkout")]
+        [ProducesResponseType(typeof(CartResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> CartCheckout([FromRoute]string cartId, [FromBody]CartCheckoutRequest payload, [FromHeader(Name = "x-team-control")]string controlId)
         {
             _logger.LogInformation("CartCheckout: {cartId} {@payload} {controlId}", cartId, payload, controlId);

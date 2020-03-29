@@ -20,6 +20,7 @@ using Product.Service.API.Repositories;
 using FluentValidation.AspNetCore;
 using Product.Service.API.Validators;
 using Product.Service.API.Infrastructure.Filters;
+using Microsoft.OpenApi.Models;
 
 namespace product.service.API
 {
@@ -45,6 +46,14 @@ namespace product.service.API
                 config.RegisterValidatorsFromAssemblyContaining<CreateProductRequestValidator>();
             });
 
+            services.AddHealthChecks();
+
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "Product.Service API", Version = "v1" });
+                options.CustomSchemaIds(x => x.FullName);
+            });
+
             services.AddAutoMapper(typeof(ProductProfile).Assembly);
 
             services.AddMongoDB(Configuration);
@@ -64,6 +73,13 @@ namespace product.service.API
 
             app.UseSerilogRequestLogging();
 
+            app.UseSwagger();
+
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Product.Service API V1");
+            });
+
             app.UseRouting();
 
             app.UseHttpMetrics();
@@ -72,6 +88,7 @@ namespace product.service.API
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHealthChecks("/health");
                 endpoints.MapMetrics();
                 endpoints.MapControllers();
             });

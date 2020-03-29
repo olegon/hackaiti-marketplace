@@ -18,6 +18,7 @@ using Currency.Service.API.Services;
 using Refit;
 using AutoMapper;
 using Currency.Service.API.Infrastructure.AutoMapper;
+using Microsoft.OpenApi.Models;
 
 namespace currency.service.API
 {
@@ -35,6 +36,14 @@ namespace currency.service.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddHealthChecks();
+
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "Currency.Service API", Version = "v1" });
+                options.CustomSchemaIds(x => x.FullName);options.CustomSchemaIds(x => x.FullName);options.CustomSchemaIds(x => x.FullName);
+            });
 
             services.AddAutoMapper(typeof(CurrencyProfile).Assembly);
 
@@ -60,6 +69,13 @@ namespace currency.service.API
 
             app.UseSerilogRequestLogging();
 
+            app.UseSwagger();
+
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Currency.Service API V1");
+            });
+
             app.UseRouting();
 
             app.UseHttpMetrics();
@@ -68,6 +84,7 @@ namespace currency.service.API
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHealthChecks("/health");
                 endpoints.MapMetrics();
                 endpoints.MapControllers();
             });

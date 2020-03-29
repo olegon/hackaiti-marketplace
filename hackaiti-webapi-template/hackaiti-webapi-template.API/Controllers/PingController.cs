@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using hackaiti_webapi_template.API.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -23,7 +24,7 @@ namespace hackaiti_webapi_template.API.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(PingResponse), 200)]
+        [ProducesResponseType(typeof(PingResponse), StatusCodes.Status200OK)]
         public PingResponse Post([FromBody]PingRequest payload)
         {
             _logger.LogInformation("Payload: {@payload}", payload);

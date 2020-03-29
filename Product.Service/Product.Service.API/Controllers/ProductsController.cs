@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Product.Service.API.Exceptions;
@@ -35,6 +36,7 @@ namespace product.service.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(ProductResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetProductById([FromRoute]string id)
         {
              _logger.LogInformation("GetProductById: {id}", id);
@@ -54,6 +56,7 @@ namespace product.service.API.Controllers
         }
 
         [HttpGet("sku/{sku}")]
+        [ProducesResponseType(typeof(ProductResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetProductBySKU([FromRoute]string sku)
         {
             _logger.LogInformation("GetProductBySKU: {sku}", sku);
@@ -73,6 +76,7 @@ namespace product.service.API.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(typeof(ProductResponse), StatusCodes.Status201Created)]
         public async Task<IActionResult> AddProduct([FromBody]CreateProductRequest payload)
         {
             _logger.LogInformation("AddProduct: {@payload}", payload);

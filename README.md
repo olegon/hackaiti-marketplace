@@ -4,10 +4,8 @@ Minha solução do Hackaton Iti Marketplace Edition! :p
 
 ##  Para fazer
 
-- persistir informações no Checkout.Service;
-- adicionar Health Cheking;
-- adicionar Swagger;
 - adicionar Open Tracing;
+- refatorar Checkout.Service com MediatR;
 - repensar estratégia de redelivery e dlc;
 - adicionar testes unitários;
 - adicionar testes integrados;

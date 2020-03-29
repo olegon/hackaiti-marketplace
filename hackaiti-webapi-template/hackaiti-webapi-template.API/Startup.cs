@@ -34,11 +34,14 @@ namespace hackaiti_webapi_template.API
         {
             services.AddControllers();
 
+            services.AddHealthChecks();
+
             services.AddAutoMapper(typeof(PingProfile).Assembly);
             
             services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "hackaiti-webapi-template API", Version = "v1" });
+                options.CustomSchemaIds(x => x.FullName);
             });
         }
 
@@ -69,6 +72,7 @@ namespace hackaiti_webapi_template.API
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHealthChecks("/health");
                 endpoints.MapMetrics();
                 endpoints.MapControllers();
             });

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Currency.Service.API.Model;
 using Currency.Service.API.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -26,6 +27,7 @@ namespace currency.service.API.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(GetCurrenciesResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get()
         {
             var response = await _currencyCacheService.GetCurrencies();

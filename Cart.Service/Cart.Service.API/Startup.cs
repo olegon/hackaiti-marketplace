@@ -23,6 +23,8 @@ using Cart.Service.API.Infrastructure.AmazonSQS;
 using Cart.Service.API.Infrastructure.Filters;
 using FluentValidation.AspNetCore;
 using Cart.Service.API.Validators;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace cart.service.API
 {
@@ -46,6 +48,15 @@ namespace cart.service.API
             .AddFluentValidation(config =>
             {
                 config.RegisterValidatorsFromAssemblyContaining<CreateCartRequestValidator>();
+            });
+
+            services.AddHealthChecks();
+
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "Cart.Service API", Version = "v1" });
+                options.CustomSchemaIds(x => x.FullName);
+                options.AddFluentValidationRules();
             });
 
             services.AddAutoMapper(typeof(CartProfile).Assembly);
@@ -75,6 +86,13 @@ namespace cart.service.API
 
             app.UseSerilogRequestLogging();
 
+            app.UseSwagger();
+
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Cart.Service API V1");
+            });
+
             app.UseRouting();
 
             app.UseHttpMetrics();
@@ -83,6 +101,7 @@ namespace cart.service.API
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHealthChecks("/health");
                 endpoints.MapMetrics();
                 endpoints.MapControllers();
             });
