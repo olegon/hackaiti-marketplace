@@ -2,5 +2,5 @@
 
 set -x
 
-dotnet new -i ./hackaiti-webapi-template
+dotnet new -i ./hackaiti-webapi-template $*
 

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Checkout.Service.Worker.Models
 {
-    public class GetCurrenciesResponse
+    public class GetHttpCurrenciesResponse
     {
         public IEnumerable<Currency> Currencies { get; set; }
         public IDictionary<string, double> Factors { get; set; }

@@ -2,5 +2,5 @@
 
 set -x
 
-dotnet new -u "$PWD/hackaiti-webapi-template"
+dotnet new -u "$PWD/hackaiti-webapi-template" $*
 

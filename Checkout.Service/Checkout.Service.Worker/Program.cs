@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Checkout.Service.Worker.Infrastructure.AmazonSQS;
 using Checkout.Service.Worker.Infrastructure.AutoMapper;
 using Checkout.Service.Worker.Services;
+using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -60,21 +61,23 @@ namespace Checkout.Service.Worker
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
+                    services.AddMediatR(typeof(Program).Assembly);
+                    
                     services.AddAmazonSQS(hostContext.Configuration);
 
                     services.AddAutoMapper();
 
-                    services.AddSingleton<ICurrencyService>(serviceProvider =>
+                    services.AddSingleton<KafkaTimelineProducer>();
+
+                    services.AddSingleton<IHttpCurrencyService>(serviceProvider =>
                     {
-                        return RestService.For<ICurrencyService>(hostContext.Configuration["CurrencyServiceURI"]);
+                        return RestService.For<IHttpCurrencyService>(hostContext.Configuration["CurrencyServiceURI"]);
                     });
 
-                    services.AddSingleton<IInvoiceService>(serviceProvider =>
+                    services.AddSingleton<IHttpInvoiceService>(serviceProvider =>
                     {
-                        return RestService.For<IInvoiceService>(hostContext.Configuration["ZupInvoiceServiceURI"]);
+                        return RestService.For<IHttpInvoiceService>(hostContext.Configuration["ZupInvoiceServiceURI"]);
                     });
-
-                    services.AddSingleton<ITimelineService, TimeLineService>();
 
                     services.AddHostedService<StartCheckoutWorker>();
                 })

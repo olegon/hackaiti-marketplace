@@ -4,9 +4,9 @@ using Refit;
 
 namespace Checkout.Service.Worker.Services
 {
-    public interface ICurrencyService
+    public interface IHttpCurrencyService
     {
         [Get("/currencies")]
-        Task<GetCurrenciesResponse> GetCurrencies();
+        Task<GetHttpCurrenciesResponse> GetCurrencies();
     }
 }

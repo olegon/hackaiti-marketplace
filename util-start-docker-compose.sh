@@ -18,4 +18,6 @@ then
     exit 1
 fi
 
-docker-compose up --build --force-recreate
+set -x
+
+docker-compose up --build --force-recreate $*
