@@ -30,7 +30,7 @@ services:
     - JAEGER_SAMPLER_PARAM=1
     - MongoDbConnectionString=mongodb://mongo-cart-service:27017
     - ProductServiceURI=http://product-service
-    - AmazonSQSCheckoutQueueURL=https://sqs.us-east-1.amazonaws.com/105029661252/hackaiti-marketplace-start-checkout
+    - AmazonSQSCheckoutQueueURL=https://sqs.us-east-1.amazonaws.com/428534468426/hackaiti-marketplace-start-checkout
     - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
     - AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
     - AWS_REGION=$AWS_REGION
@@ -49,7 +49,7 @@ services:
     - JAEGER_ENDPOINT=http://jaeger:14268/api/traces
     - JAEGER_SAMPLER_TYPE=const
     - JAEGER_SAMPLER_PARAM=1
-    - AmazonSQSCheckoutQueueURL=https://sqs.us-east-1.amazonaws.com/105029661252/hackaiti-marketplace-start-checkout
+    - AmazonSQSCheckoutQueueURL=https://sqs.us-east-1.amazonaws.com/428534468426/hackaiti-marketplace-start-checkout
     - PrometheusPort=8080
     - CurrencyServiceURI=http://currency-service
     - ZupInvoiceServiceURI=http://zup-mock-api
