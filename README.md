@@ -13,8 +13,6 @@ Minha solução do Hackaton Iti Marketplace Edition! :p
 - versionar contratos;
 - adicionar repositório de dependências compartilhadas;
 - deploy em ECS/EKS;
-- automatizar configuração do Grafana;
-    - dashes: 10427 e 10915
 
 ## Novas soluções
 

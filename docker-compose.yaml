@@ -117,6 +117,9 @@ services:
     container_name: grafana
     ports:
     - 3000:3000
+    volumes: 
+    - ./grafana/volume:/var/lib/grafana
+    user: ${USER_ID}
     depends_on: 
     - prometheus
 
