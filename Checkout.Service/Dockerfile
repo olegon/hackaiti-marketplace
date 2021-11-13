@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
 WORKDIR /app
 
 # Copy csproj and restore as distinct layers
@@ -11,13 +11,13 @@ RUN dotnet restore
 COPY . ./
 
 # Run unit tests
-RUN dotnet test Checkout.Service.UnitTests/Checkout.Service.UnitTests.csproj /p:CollectCoverage=true
+# (disabled while theres no test) RUN dotnet test Checkout.Service.UnitTests/Checkout.Service.UnitTests.csproj /p:CollectCoverage=true
 
 # Build aplication release
 RUN dotnet publish ./Checkout.Service.Worker/Checkout.Service.Worker.csproj -c Release -o out
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/core/runtime:3.1
+FROM mcr.microsoft.com/dotnet/runtime:6.0
 EXPOSE 8080
 WORKDIR /app
 COPY --from=build-env /app/out .

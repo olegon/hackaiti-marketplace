@@ -1,5 +1,4 @@
 using AutoMapper;
-using Currency.Service.API.Model;
 
 namespace Currency.Service.API.Infrastructure.AutoMapper
 {
@@ -7,7 +6,7 @@ namespace Currency.Service.API.Infrastructure.AutoMapper
     {
         public CurrencyProfile()
         {
-            CreateMap<Entities.Currency, GetCurrenciesResponse.Currency>();
+            CreateMap<Entities.Currency, Model.Currency>();
         }
     }
 }

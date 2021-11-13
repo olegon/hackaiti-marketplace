@@ -31,12 +31,8 @@ namespace Currency.Service.API.Services
             {
                 var currencies = await _zupCurrencyService.GetCurrencies();
 
-                var result = new GetCurrenciesResponse()
-                {
-                    Currencies = _mapper.Map<IEnumerable<GetCurrenciesResponse.Currency>>(currencies),
-                    Factors = CalculateFactors(currencies)
-                };
-
+                var result = new GetCurrenciesResponse( _mapper.Map<IEnumerable<Model.Currency>>(currencies), CalculateFactors(currencies));
+                
                 var timespanUntilMidnight = DateTime.Now.Date.AddDays(1).Subtract(DateTime.Now);
 
                 _database.StringSet(REDIS_CURRENCIES_KEY, JsonConvert.SerializeObject(result), timespanUntilMidnight);
