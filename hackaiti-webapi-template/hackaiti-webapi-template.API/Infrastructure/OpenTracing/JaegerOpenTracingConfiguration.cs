@@ -1,11 +1,8 @@
-using System.Reflection;
 using Jaeger;
-using Jaeger.Samplers;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+using Jaeger.Senders;
+using Jaeger.Senders.Thrift;
 using OpenTracing;
 using OpenTracing.Util;
-
 namespace hackaiti_webapi_template.API.Infrastructure.OpenTracing
 {
     public static class JaegerOpenTracingConfiguration
@@ -14,11 +11,13 @@ namespace hackaiti_webapi_template.API.Infrastructure.OpenTracing
         {
             services.AddSingleton<ITracer>(serviceProvider =>
             {
-                var serviceName = Assembly.GetEntryAssembly().GetName().Name;
-
                 var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
+                var configuration = serviceProvider.GetRequiredService<IConfiguration>();
 
-                var tracer =  Configuration.FromEnv(loggerFactory).GetTracer();
+                Configuration.SenderConfiguration.DefaultSenderResolver = new SenderResolver(loggerFactory)
+	                .RegisterSenderFactory<ThriftSenderFactory>();
+
+                var tracer =  Configuration.FromIConfiguration(loggerFactory, configuration).GetTracer();
 
                 GlobalTracer.Register(tracer);
 

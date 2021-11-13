@@ -31,7 +31,7 @@ app.post('/invoices', (req, res) => {
     
     const rnd = Math.random();
 
-    if (rnd < 0.1) {
+    if (false && rnd < 0.1) {
         res.status(500).send();
     }
     else {

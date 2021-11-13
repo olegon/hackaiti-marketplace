@@ -10,7 +10,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/Product.Service.API/bin/Debug/netcoreapp3.1/Product.Service.API.dll",
+            "program": "${workspaceFolder}/Product.Service.API/bin/Debug/net6.0/Product.Service.API.dll",
             "args": [],
             "cwd": "${workspaceFolder}/Product.Service.API",
             "stopAtEntry": false,
@@ -21,7 +21,11 @@
             },
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development",
-                "JAEGER_SERVICE_NAME": "xdd"
+                "JAEGER_SERVICE_NAME": "Product.Service",
+                "JAEGER_AGENT_HOST": "localhost",
+                "JAEGER_AGENT_PORT": "6831",
+                "JAEGER_SAMPLER_TYPE": "const",
+                "JAEGER_SAMPLER_PARAM": "1",
             },
             "sourceFileMap": {
                 "/Views": "${workspaceFolder}/Views"

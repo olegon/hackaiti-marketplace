@@ -3,19 +3,17 @@ const availableProducts = require('./products.json');
 const availablecurrencyCodes = ['USD', 'BRL', 'EUR'];
 
 async function run() {
-    while (true) {
-        try {
-            const createCartResponse = await createCart();
-            // console.log(createCartResponse);
+    try {
+        const createCartResponse = await createCart();
+        // console.log(createCartResponse);
 
-            await addItemsToCart(createCartResponse.id);
+        await addItemsToCart(createCartResponse.id);
 
-            const checkoutCartResponse = await checkoutCart(createCartResponse.id, choose(availablecurrencyCodes));
-            console.log(checkoutCartResponse.id);
-        }
-        catch (error) {
-            console.error(error)
-        }
+        const checkoutCartResponse = await checkoutCart(createCartResponse.id, choose(availablecurrencyCodes));
+        console.log(checkoutCartResponse.id);
+    }
+    catch (error) {
+        console.error(error)
     }
 }
 
@@ -82,4 +80,16 @@ function random(min = 0, max = 1_000_000) {
     return Math.floor(Math.random() * (max - min) + min)
 }
 
-run();
+async function paralelRun(instances = 1, interactions = 100) {
+    while (interactions-- > 0) {
+        const promises = [];
+
+        for (let i = 0; i < instances; i++) {
+            promises.push(run());
+        }
+        
+        await Promise.all(promises);
+    }
+}
+
+paralelRun(1000, 1);

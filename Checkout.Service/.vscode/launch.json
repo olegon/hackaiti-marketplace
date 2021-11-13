@@ -9,11 +9,18 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/Checkout.Service.Worker/bin/Debug/netcoreapp3.1/Checkout.Service.Worker.dll",
+            "program": "${workspaceFolder}/Checkout.Service.Worker/bin/Debug/net6.0/Checkout.Service.Worker.dll",
             "args": [],
             "cwd": "${workspaceFolder}/Checkout.Service.Worker",
             "console": "internalConsole",
-            "stopAtEntry": false
+            "stopAtEntry": false,
+            "env": {
+                "JAEGER_SERVICE_NAME": "Checkout.Service",
+                "JAEGER_AGENT_HOST": "localhost",
+                "JAEGER_AGENT_PORT": "6831",
+                "JAEGER_SAMPLER_TYPE": "const",
+                "JAEGER_SAMPLER_PARAM": "1",
+            }
         },
         {
             "name": ".NET Core Attach",

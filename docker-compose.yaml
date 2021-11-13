@@ -7,7 +7,8 @@ services:
     - "5000:80"
     environment: 
     - JAEGER_SERVICE_NAME=Product.Service
-    - JAEGER_ENDPOINT=http://jaeger:14268/api/traces
+    - JAEGER_AGENT_HOST=jaeger
+    - JAEGER_AGENT_PORT=6831
     - JAEGER_SAMPLER_TYPE=const
     - JAEGER_SAMPLER_PARAM=1
     - MongoDbConnectionString=mongodb://mongo-product-service:27017
@@ -25,12 +26,13 @@ services:
     - "5050:80"
     environment: 
     - JAEGER_SERVICE_NAME=Cart.Service
-    - JAEGER_ENDPOINT=http://jaeger:14268/api/traces
+    - JAEGER_AGENT_HOST=jaeger
+    - JAEGER_AGENT_PORT=6831
     - JAEGER_SAMPLER_TYPE=const
     - JAEGER_SAMPLER_PARAM=1
     - MongoDbConnectionString=mongodb://mongo-cart-service:27017
     - ProductServiceURI=http://product-service
-    - AmazonSQSCheckoutQueueURL=https://sqs.us-east-1.amazonaws.com/428534468426/hackaiti-marketplace-start-checkout
+    - AmazonSQSCheckoutQueueURL=https://sqs.sa-east-1.amazonaws.com/428534468426/hackaiti-marketplace-start-checkout
     - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
     - AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
     - AWS_REGION=$AWS_REGION
@@ -46,10 +48,11 @@ services:
     - 8080:8080
     environment: 
     - JAEGER_SERVICE_NAME=Checkout.Service
-    - JAEGER_ENDPOINT=http://jaeger:14268/api/traces
+    - JAEGER_AGENT_HOST=jaeger
+    - JAEGER_AGENT_PORT=6831
     - JAEGER_SAMPLER_TYPE=const
     - JAEGER_SAMPLER_PARAM=1
-    - AmazonSQSCheckoutQueueURL=https://sqs.us-east-1.amazonaws.com/428534468426/hackaiti-marketplace-start-checkout
+    - AmazonSQSCheckoutQueueURL=https://sqs.sa-east-1.amazonaws.com/428534468426/hackaiti-marketplace-start-checkout
     - PrometheusPort=8080
     - CurrencyServiceURI=http://currency-service
     - ZupInvoiceServiceURI=http://zup-mock-api
@@ -70,7 +73,8 @@ services:
     - 5100:80
     environment: 
     - JAEGER_SERVICE_NAME=Currency.Service
-    - JAEGER_ENDPOINT=http://jaeger:14268/api/traces
+    - JAEGER_AGENT_HOST=jaeger
+    - JAEGER_AGENT_PORT=6831
     - JAEGER_SAMPLER_TYPE=const
     - JAEGER_SAMPLER_PARAM=1
     - RedisConnectionString=redis:6379
@@ -136,7 +140,7 @@ services:
     - 14250:14250
     - 9411:9411
     environment: 
-    - COLLECTOR_ZIPKIN_HTTP_PORT=9411
+    - COLLECTOR_ZIPKIN_HTTP_PORT=:9411
   
   mongo-product-service:
     image: mongo

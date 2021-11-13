@@ -10,7 +10,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/Currency.Service.API/bin/Debug/netcoreapp3.1/Currency.Service.API.dll",
+            "program": "${workspaceFolder}/Currency.Service.API/bin/Debug/net6.0/Currency.Service.API.dll",
             "args": [],
             "cwd": "${workspaceFolder}/Currency.Service.API",
             "stopAtEntry": false,
@@ -20,7 +20,12 @@
                 "pattern": "^\\s*Now listening on:\\s+(https?://\\S+)"                
             },
             "env": {
-                "ASPNETCORE_ENVIRONMENT": "Development"
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "JAEGER_SERVICE_NAME": "Currency.Service",
+                "JAEGER_AGENT_HOST": "localhost",
+                "JAEGER_AGENT_PORT": "6831",
+                "JAEGER_SAMPLER_TYPE": "const",
+                "JAEGER_SAMPLER_PARAM": "1",
             },
             "sourceFileMap": {
                 "/Views": "${workspaceFolder}/Views"
